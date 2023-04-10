@@ -242,7 +242,19 @@ abstract class AbstractAuth implements AuthInterface
      */
     protected function getQueryParameters($isPost, $parameters)
     {
-        return ($isPost) ? [] : (array) $parameters;
+        if ($isPost) {
+            return [];
+        }
+        $parameters = (array) $parameters;
+        if (!empty($parameters['where'])) {
+            foreach ($parameters['where'] as $index => $expression) {
+                $parameters["where[{$index}][col]"] = $expression['col'];
+                $parameters["where[{$index}][expr]"] = $expression['expr'];
+                $parameters["where[{$index}][val]"] = $expression['val'];
+            }
+            unset($parameters['where']);
+        }
+        return $parameters;
     }
 
     /**

@@ -125,10 +125,8 @@ class Api implements LoggerAwareInterface
      * @return $this
      */
     public function setLogger(LoggerInterface $logger)
-    {
+    : void {
         $this->logger = $logger;
-
-        return $this;
     }
 
     /**
@@ -257,8 +255,6 @@ class Api implements LoggerAwareInterface
                         $settings['temporaryFilePath'] = $this->getTemporaryFilePath();
                     }
                     $response = $this->auth->makeRequest($url, $parameters, $method, $settings);
-
-                    $this->getLogger()->debug('API Response', ['response' => $response]);
 
                     if (!is_array($response)) {
                         $this->getLogger()->warning($response);
